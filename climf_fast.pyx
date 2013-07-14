@@ -96,7 +96,9 @@ def climf_fast(CSRDataset dataset,
                int n_factors,
                int n_iter,
                int shuffle,
-               int seed):
+               int seed,
+               np.ndarray[int, ndim=1, mode='c'] sample_user_ids,
+               np.ndarray sample_user_data):
 
     # get the data information into easy vars
     cdef Py_ssize_t n_samples = dataset.n_samples
@@ -128,7 +130,6 @@ def climf_fast(CSRDataset dataset,
     cdef np.ndarray[DOUBLE, ndim=1, mode='c'] V_j_minus_V_k = np.zeros(n_factors, dtype=np.float64, order="c")
 
     for t in range(n_iter):
-        print "beginning update"
         if shuffle > 0:
             dataset.shuffle(seed)
 
@@ -171,6 +172,9 @@ def climf_fast(CSRDataset dataset,
             # U[i] += gamma*dU
             for idx in range(n_factors):
                 U[i, idx] += gamma * dU[idx]
+
+        print 'iteration {0}:'.format(t+1)
+        print 'train mrr = {0:.8f}'.format(compute_mrr_fast(sample_user_ids, sample_user_data, U, V))
 
 
 cdef class CSRDataset:
