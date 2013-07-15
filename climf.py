@@ -44,25 +44,6 @@ class CLiMF:
         
         climf_fast(data, self.U, self.V, self.lbda, self.gamma, self.dim, 
                    self.max_iters, self.shuffle, self.seed, train_sample_users, sample_user_data)
-    
-    def objective(self, data):
-        """compute objective function F(U,V)
-        params:
-          data: scipy csr sparse matrix containing user->(item,count)
-          U   : user factors
-          V   : item factors
-          self.lbda: regularization constant lambda
-        returns:
-          current value of F(U,V)
-        """
-        F = -0.5*self.lbda*(np.sum(self.U*self.U)+np.sum(self.V*self.V))
-        for i in xrange(len(self.U)):
-            f = self.precompute_f(data,i)
-            for j in f:
-                F += log(self.g(f[j]))
-                for k in f:
-                    F += log(1-self.g(f[k]-f[j]))
-        return F
 
     def compute_mrr(self, testdata):
         return compute_mrr_fast(np.array(range(testdata.shape[0]), dtype=np.int32), np.array([np.array(testdata.getrow(i).indices, dtype=np.int32) for i in range(testdata.shape[0])]), self.U, self.V)
