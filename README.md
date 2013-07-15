@@ -1,5 +1,4 @@
-pyCLiMF
-=======
+# pyCLiMF
 
 Collaborative Less is More Matrix Factorization in Python
 
@@ -7,14 +6,12 @@ CLiMF: Learning to Maximize Reciprocal Rank with Collaborative Less-is-More Filt
 
 Basically, this is a cythonized version of https://github.com/gamboviol/climf/
 
-Installation
-============
+## Installation
 ```
 python setup.py build_ext --inplace
 ```
 
-Example
-=======
+## Getting Started
 
 Here is an example run on the epinions dataset:
 
